@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:helloworld:Magento_Widget:etc/widget.xsd">
+   <widget class="Bullseye\Locator\Block\Widget\Nearestlocation" id="bullseye_nearestlocation">
+       <label>My nearest location</label>
+       <description>My nearest location</description>
+       <parameters>
+            <parameter name="title" sort_order="5" visible="true" required="true" xsi:type="text">
+               <label>Title</label>
+               <value>Stores Near you</value>
+            </parameter>
+            <parameter name="search_radius" sort_order="10" visible="true" required="true" xsi:type="text">
+               <label>Radius to search</label>
+               <description translate="true">Enter radius in miles.</description>
+               <value>25</value>
+            </parameter>
+            <parameter name="not_found_text" sort_order="20" visible="true" required="true" xsi:type="text">
+               <label>Message if no store found</label>
+            </parameter>
+            <parameter name="max_store" sort_order="30" visible="true" xsi:type="text">
+               <label>Maximum store to show</label>
+            </parameter>
+            <parameter name="view" sort_order="30" visible="true" xsi:type="select" source_model="Bullseye\Locator\Model\Config\Source\Viewtype">
+               <label>View</label>
+            </parameter>
+       </parameters>
+   </widget>
+
+   <widget class="Bullseye\Locator\Block\Widget\Mystore" id="bullseye_mystore">
+       <label>My Store</label>
+       <description>My nearest location</description>
+       <parameters>
+            <parameter name="title" sort_order="5" visible="true" xsi:type="text">
+               <label>Title</label>
+               <value>My Store</value>
+            </parameter>
+       </parameters>
+   </widget>
+</widgets>

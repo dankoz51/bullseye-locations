@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <locator>
+            <general>
+                <top_link_text>Store Locator</top_link_text>
+                <cms_page>storelocator</cms_page>
+            </general>
+            <text>
+            	<mini_locator_title>Find a Store</mini_locator_title>
+                <mini_locator_search_text>Find a store near ZIP code.</mini_locator_search_text>
+                <mini_locator_saved_store_title>Your preferred store:</mini_locator_saved_store_title>
+                <mini_locator_no_store_msg>No saved stores yet.</mini_locator_no_store_msg>
+                <mini_locator_nearby_store_title>Other stores near you:</mini_locator_nearby_store_title>
+                <mini_locator_searched_store_title>Other stores near ZIP code.</mini_locator_searched_store_title>
+                <mini_locator_no_nearby_msg>We could not find a store near you.</mini_locator_no_nearby_msg>
+                <mini_locator_no_searched_store_msg>We could not find stores near ZIP/Postal code.</mini_locator_no_searched_store_msg>
+                <mini_locator_find_store_link_title>Search stores on map.</mini_locator_find_store_link_title>
+            </text>
+        </locator>
+    </default>
+</config>

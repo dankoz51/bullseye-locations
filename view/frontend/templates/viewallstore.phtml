@@ -1,0 +1,168 @@
+<div class="viewallcover">
+<div id="map"> </div>
+</div>
+
+<?php if($block->getGoogleApiKey()):?>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $block->getGoogleApiKey();?>&callback=initMap"
+ async defer></script>
+<?php else :?>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+<?php endif;?>
+
+<script type="text/javascript">
+	
+	require(['jquery'],function($){
+
+		var absoluteUrl = ''; 
+		var bullseyeApiKey = '<?php echo $block->getApiKey(); ?>';
+		var bullseyeClientId = '<?php echo $block->getClientId(); ?>';
+		var locationservicedisablemsg = "<?php echo __($block->getLocationServiceDisableMsg()); ?>"; 
+	    var displayLocName = true;
+		var displayPhone = true;
+	    var imagesDir = 'images'; 
+		var locationTerm = 'store'; 
+		var searchRadius = '25';
+
+		//Do not modify
+		var bullseyeWsUrl = 'https://ws.bullseyelocations.com';
+		var headerDivId = 'bullseye-banner-header';
+	    var headerInnerDivId = 'bullseye-banner-header-inner';
+	    var headerLoaderId = 'bullseye-banner-header-loader';
+	    var headerNoStoreId = 'bullseye-banner-header-no-store';
+	    var headerNearestStoreId = 'bullseye-banner-header-nearest-store';
+	    var beSrchCookieKey = "beloc_srchdata";
+	    var storeCount = 0;	
+	    // initMap();
+
+	    initMarkers();
+
+	    function initMarkers(){
+
+	    	if (navigator.geolocation) {
+                
+                navigator.geolocation.getCurrentPosition(
+                    
+                    function (position) {
+                        
+                        lat = position.coords.latitude;
+                        lon = position.coords.longitude;
+                        
+                        var zip = getUrlParameter('zip');
+                        var wsurl;
+                        if( typeof zip == 'undefined' || zip == 'undefined' || zip == ''){
+                        	wsurl = buildUrl(lat, lon);
+                        }
+					   	else if (zip.length == 5){
+						    wsurl = buildUrlZip(zip);
+						   
+					   	} else {
+                         	wsurl = buildUrl(lat, lon);
+                       	}
+
+                        $.getJSON(wsurl + "&callback=ResultList", function (data) { })
+                        .fail(function () {
+                        	// Failed
+                        })
+                        .done(function (data) {
+                        	
+                            if (data.ResultList.length >0) {
+                            	storeCount = 0;
+								
+								initMap(data.ResultList);
+
+								
+
+			            		
+                            }
+                        });
+                    },
+                    function (error) {
+                        showDefaultMessage();
+                    }
+                );
+            } else {
+                showDefaultMessage();
+            }
+	    }
+
+	    function buildUrl(lat, lon) {
+	        var lat, lon;
+	        
+	        var url = bullseyeWsUrl + '/RestSearch.svc/DoSearch2?ClientId=' + bullseyeClientId + '&ApiKey=' + bullseyeApiKey + '&Latitude=' + lat + '&Longitude=' + lon + '&radius=' + searchRadius + '&StartIndex=0&PageSize=10&id=16779292';
+	        
+	        return url;
+	    }
+	    
+	    function buildUrlZip(zip) {
+	        
+	        var url = bullseyeWsUrl + '/RestSearch.svc/DoSearch2?ClientId=' + bullseyeClientId + '&ApiKey=' + bullseyeApiKey + '&PostalCode=' + zip+ '&radius=' + searchRadius + '&StartIndex=0&PageSize=10';
+	        
+	        return url;
+	    }
+
+	    function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		}
+	    
+		function initMap(markers) {
+                    
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: new google.maps.LatLng(markers[0].Latitude,markers[0].Longitude),
+                zoom: 9
+            });
+
+            var infoWindow = new google.maps.InfoWindow;
+
+            // Marker 
+
+            
+            for (var j=0; j < markers.length; j++ ) {
+
+    			var id = markers[j].Id != null ? markers[j].Id : "";
+	            var name = markers[j].City != null ? markers[j].City : "";
+	            var address = markers[j].Address1 != null ? markers[j].Address1 : "";
+	            var point = new google.maps.LatLng(
+	                parseFloat(markers[j].Latitude != null ? markers[j].Latitude : ""),
+	                parseFloat(markers[j].Longitude != null ? markers[j].Longitude : "")
+	            );
+	            
+
+	            var infowincontent = document.createElement('div');
+	            
+	            var strong = document.createElement('strong');
+	            strong.textContent = name
+	            infowincontent.appendChild(strong);
+	            infowincontent.appendChild(document.createElement('br'));
+
+	            var text = document.createElement('text');
+	            text.textContent = address
+	            infowincontent.appendChild(text);
+	            var icon = {};
+	            
+	            var marker = new google.maps.Marker({
+	                map: map,
+	                position: point,
+	                label: icon.label,
+	                content: '<div><strong>'+name+'</strong><br><text>'+address+'</text></div>',
+	            });
+
+				marker.addListener('click', function() {
+	                infoWindow.setContent(this.content);
+	                infoWindow.open(map, this);
+	                return this;
+	            });
+    		}
+        }
+	});
+</script>

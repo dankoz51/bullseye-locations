@@ -1,0 +1,11 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <title>My Store</title>
+    </head>
+	<body>
+        <referenceContainer name="content">
+            <block class="Bullseye\Locator\Block\Link" name="bullseye.mystore.index" template="Bullseye_Locator::mystore.phtml" />
+        </referenceContainer>
+    </body>
+</page>

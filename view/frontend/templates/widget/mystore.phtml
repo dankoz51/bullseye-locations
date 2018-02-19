@@ -1,0 +1,68 @@
+<?php if($block->isCustomerLogin()) : ?>
+    
+    <div class="block-compare">
+        <div class="block-title">
+            <strong id="block-mystore-heading" role="heading" aria-level="2"><?php echo __($block->getWidgetTitle()); ?></strong>
+        </div>
+
+        <?php if($block->getAddressID() != 0) : ?>
+            <div id="map-cover">
+                <div id="map"> </div>
+            </div>
+        <?php else : ?>
+            <p><?php echo __('You do not have any saved store'); ?></p>
+        <?php endif; ?>
+    </div>
+
+    <?php if($block->getAddressID() != 0) : ?>
+
+        <script>
+        require(['jquery'], function($){
+            var latitude = '<?php echo $block->getLatitude(); ?>';
+            var longitude = '<?php echo $block->getLongitude(); ?>';
+            var addressID = '<?php echo $block->getAddressID(); ?>';
+            var city = '<?php echo $block->getCity(); ?>';
+            var savedAddress = '<?php echo $block->getAddress(); ?>';
+            initMap();
+            function initMap() {
+                    
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: new google.maps.LatLng(latitude, longitude),
+                    zoom: 12
+                });
+
+                var infoWindow = new google.maps.InfoWindow;
+
+                var id = addressID;
+                var name = city;
+                var address = savedAddress;
+                var point = new google.maps.LatLng(
+                    parseFloat(latitude),
+                    parseFloat(longitude)
+                );
+
+                var infowincontent = document.createElement('div');
+                var strong = document.createElement('strong');
+                strong.textContent = name
+                infowincontent.appendChild(strong);
+                infowincontent.appendChild(document.createElement('br'));
+
+                var text = document.createElement('text');
+                text.textContent = address
+                infowincontent.appendChild(text);
+                var icon = {};
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: point,
+                    label: icon.label
+                });
+              
+                marker.addListener('click', function() {
+                    infoWindow.setContent(infowincontent);
+                    infoWindow.open(map, marker);
+                });
+            }
+        });
+        </script>
+    <?php endif; ?>    
+<?php endif; ?>

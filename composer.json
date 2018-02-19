@@ -1,0 +1,26 @@
+{
+  "name": "bullseye/module-locator",
+  "description": "Locate the store nearer to us.",
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "license": [
+    "OSL-3.0",
+    "AFL-3.0"
+  ],
+  "authors": [
+    {
+      "name": "Daniel Kozlowski",
+      "email": "daniel.kozlowski@xumulus.com",
+      "homepage": "-",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Bullseye\\Locator\\": ""
+    }
+  }
+}
